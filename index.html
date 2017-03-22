@@ -24,7 +24,8 @@
   #moveid li img{
 	  width:100%;
 	  height:200px;
-	  margin:auto;} 
+	  float: left;
+    } 
 #lunbo_box .btn_box{
 	position:absolute;
 	bottom:12%;
@@ -62,13 +63,10 @@
 $(function(){
     (function lunbo(){
 		var time=300;                     //轮播时间
-	    var tagId = "region";
 		var pressX = 0, pressY = 0;
+		var view_W = $(window).width()    //可见视口宽度
 		var images=null;                   //图片 数量
 		var i=1;                     //图片 第几张
-		var li_width=null;         //li的宽度
-		var li_per=null;               //li宽度占ul的百分比
-		var slide_per=null;       //手指滑动的百分比
 		var spanX=null;           //手指滑动的距离
 		var obj = document.getElementById("moveid");
 	
@@ -79,18 +77,16 @@ $(function(){
 			$("#moveid li").first().before(li_last);
 			$("#moveid li").last().after(li_first);
 			images=$("#moveid li").length;
-			li_per=(1/images);  
 			for(var j=0;j<images-2;j++){
 				$("#lunbo_box .btn_box").append("<span></span>");
 				$("#lunbo_box .btn_box span").eq(i-1).addClass("active");
 			}
 			$("#moveid").css({
-						   '-webkit-transform':'translate3d('+(-li_per)*100+'%,0,0)',
-							'transform':'translate3d('+(-li_per)*100+'%,0,0)',
-							'width':images*100+"%"
+						   '-webkit-transform':'translate3d('+(-view_W)+'px,0,0)',
+							'transform':'translate3d('+(-view_W)+'px,0,0)'
 					   }); 
-			$("#moveid li").css({"width":li_per*100+"%"});
-			li_width=$("#moveid li").width(); 
+			$("#moveid li").css({"width":view_W});
+			
 		}
 		obj.addEventListener('touchmove', function(event) {
 			// 如果这个元素的位置内只有一个手指的话
@@ -98,13 +94,12 @@ $(function(){
 			if (event.targetTouches.length == 1) {
 				var touch = event.targetTouches[0];
 				spanX = touch.pageX - pressX;
-				slide_per = spanX/li_width;
 				var spanY = touch.pageY - pressY;
 				var direct = "none";
 				if (Math.abs(spanX) > Math.abs(spanY)) {  
 					$("#moveid").css({      
-					   '-webkit-transform':'translate3d('+(i*(-li_per)+slide_per/images)*100+'%,0,0)',
-						'transform':'translate3d('+(i*(-li_per)+slide_per/images)*100+'%,0,0)',
+						'-webkit-transform':'translate3d('+((-i*view_W)+spanX)+'px,0,0)',
+						'transform':'translate3d('+((-i*view_W)+spanX)+'px,0,0)',
 						'-webkit-transition':'0ms linear',
 						'transition':'0ms linear'
 				   });
@@ -137,7 +132,6 @@ $(function(){
 		}, false);
 		obj.addEventListener('touchend', function(event) { 
 			move();
-			slide_per=null;
 			// 如果这个元素的位置内只有一个手指的话
 			if (event.targetTouches.length == 1) {
 			   // var touch = event.targetTouches[0];
@@ -146,36 +140,33 @@ $(function(){
 			}
 		}, false);
 		//setInterval(move,1000)
-		 function move(){  console.log(123)
-			 var left;   			
-			 if(Math.abs(slide_per)>0.2){        //移动多少可以滑动到下一个
+		 function move(){
+			 if(Math.abs(spanX/view_W)>0.2){        //移动多少可以滑动到下一个
 				   spanX<0?i=i+1:i=i-1;
 				   
 			  }else{
 				   i=i;
 			  }
-			  left=-(li_per*100*i); 
 			  $("#moveid").css({
-					   '-webkit-transform':'translate3d('+left+'%,0,0)',
-						'transform':'translate3d('+left+'%,0,0)',
+					   '-webkit-transform':'translate3d('+(-i*view_W)+'px,0,0)',
+						'transform':'translate3d('+(-i*view_W)+'px,0,0)',
 						'-webkit-transition':+time+'ms linear',
 						'transition':+time+'ms linear',
 			  })
 			  if(i>images-2){
 					 i=1;
-					 firsr_last();
+					 first_last();
 			  }else if(i<1){
 					 i=images-2;
-					 firsr_last();
+					 first_last();
 			  }
 		      $("#lunbo_box .btn_box span").eq(i-1).addClass("active").siblings().removeClass("active");
 		}
-		function firsr_last(){
+		function first_last(){
 	        setTimeout(function(){
-				  var left=-(li_per*100*i); 
 				  $("#moveid").css({
-					 '-webkit-transform':'translate3d('+left+'%,0,0)',
-					  'transform':'translate3d('+left+'%,0,0)',
+					 '-webkit-transform':'translate3d('+(-i*view_W)+'px,0,0)',
+					  'transform':'translate3d('+(-i*view_W)+'px,0,0)',
 					  '-webkit-transition':'0ms linear',
 					  'transition':'0ms linear'
 				 })
