@@ -40,17 +40,25 @@
 	height: 30px;
 	-webkit-transform:translate(0%);
 	transform:translate(0%);
-	-webkit-transition:all 0.5s;
-    transition:all 0.5s;
 	text-align: center;
 	font-size: 14px;
 	color: #fff;
 	opacity: 0;
 }
 #moveid li.active .font{
+	-webkit-transition:all 0.5s;
+    transition:all 0.5s;
 	-webkit-transform:translate(-50%);
 	transform:translate(-50%);
 	opacity: 1;
+}
+#moveid ._right .font{
+	-webkit-transform:translate(50%);
+	transform:translate(50%);
+}
+#moveid ._left .font{
+	-webkit-transform:translate(-150%);
+	transform:translate(-150%);
 }
 #lunbo_box .btn_box{
 	position:absolute;
@@ -124,6 +132,11 @@ $(function(){
 				spanY = touch.pageY - pressY;
 				if (Math.abs(spanX) > Math.abs(spanY)) {  
 					css_ing((-i*view_W+spanX),0)
+					if (spanX > 0) {
+						direct = "right";
+					} else {
+						direct = "left";
+					}
 				} else {
 					return false;
 					//垂直方向
@@ -161,17 +174,20 @@ $(function(){
 				   i=i;
 			  }
 			  css_ing(-i*view_W,time)
-			  if(i>images-2){
+			  if(i>images-2){console.log(i)
 					 i=1;
 					 first_last();
-			  }else if(i<1){
+			  }else if(i<1){console.log(i)
 					 i=images-2;
 					 first_last();
 			  }
 			  setTimeout(function(){
-			  	$("#lunbo_box li").eq(i).addClass("active").siblings().removeClass("active");
-		      $("#lunbo_box .btn_box span").eq(i-1).addClass("active").siblings().removeClass("active");
-		  },100)
+			      $("#lunbo_box .btn_box span").eq(i-1).addClass("active").siblings().removeClass("active");
+			      $("#lunbo_box li").eq(i).addClass("active").siblings().removeClass("active");
+			      	// $("#lunbo_box li").eq(i-1).addClass("_left").siblings().removeClass("_left");
+			      	// $("#lunbo_box li").eq(i+1).addClass("_right").siblings().removeClass("_right");
+			      
+			  },100)
 		}
 		function first_last(){
 	        setTimeout(function(){
@@ -185,6 +201,11 @@ $(function(){
 				'-webkit-transition':Time+'ms linear',
 				'transition':Time+'ms linear'
 		   });
+			if(direct == 'right'){
+	      		$("#lunbo_box li").addClass("_left").removeClass("_right");
+	      	}else{
+	      		$("#lunbo_box li").addClass("_right").removeClass("_left");
+	      	}
 		}
 	})()
 })
