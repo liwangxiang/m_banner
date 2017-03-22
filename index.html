@@ -17,6 +17,10 @@
 	  overflow:hidden;
 	  position:relative;
 	  width:55555px;
+	  -webkit-backface-visibility: hidden;
+	    backface-visibility: hidden; 
+	    -webkit-perspective: 1000;
+	    perspective: 1000;
   }
   #moveid li{
     float:left;
@@ -143,7 +147,6 @@ $(function(){
 		 function move(){
 			 if(Math.abs(spanX/view_W)>0.2){        //移动多少可以滑动到下一个
 				   spanX<0?i=i+1:i=i-1;
-				   
 			  }else{
 				   i=i;
 			  }
@@ -170,7 +173,7 @@ $(function(){
 					  '-webkit-transition':'0ms linear',
 					  'transition':'0ms linear'
 				 })
-			},time-10)
+			},time)
 		}
 	})()
 })
