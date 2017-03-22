@@ -45,10 +45,12 @@
 	text-align: center;
 	font-size: 14px;
 	color: #fff;
+	opacity: 0;
 }
 #moveid li.active .font{
 	-webkit-transform:translate(-50%);
 	transform:translate(-50%);
+	opacity: 1;
 }
 #lunbo_box .btn_box{
 	position:absolute;
@@ -109,6 +111,7 @@ $(function(){
 			$("#moveid li").first().before(li_last);
 			$("#moveid li").last().after(li_first);
 			images=$("#moveid li").length;
+			$("#moveid li").eq(1).addClass("active");
 			css_ing(-view_W,0) 
 		}
 		obj.addEventListener('touchmove', function(event) {
@@ -164,8 +167,10 @@ $(function(){
 					 i=images-2;
 					 first_last();
 			  }
-			  $("#lunbo_box li").eq(i).addClass("active").siblings().removeClass("active");
+			  setTimeout(function(){
+			  	$("#lunbo_box li").eq(i).addClass("active").siblings().removeClass("active");
 		      $("#lunbo_box .btn_box span").eq(i-1).addClass("active").siblings().removeClass("active");
+		  },100)
 		}
 		function first_last(){
 	        setTimeout(function(){
