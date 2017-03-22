@@ -1,0 +1,188 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+<meta charset="utf-8">
+<meta http-equiv="Content-Type" content="text/html" />
+<meta http-equiv="X-UA-Compatible" content="IE=edge, chrome=1">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, minimum-scale=1.0, maximum-scale=1.0, user-scalable=no" /><meta name="format-detection" content="telephone=no" />
+<title>无标题文档</title>
+<style>
+  *{margin:0;padding:0;}
+    #lunbo_box{
+        width:100%;
+		overflow:hidden; 
+		position:relative;
+	 }
+  #moveid{
+	  overflow:hidden;
+	  position:relative;
+	  width:55555px;
+  }
+  #moveid li{
+    float:left;
+	  }
+  #moveid li img{
+	  width:100%;
+	  height:200px;
+	  margin:auto;} 
+#lunbo_box .btn_box{
+	position:absolute;
+	bottom:12%;
+	left:50%;
+	-webkit-transform:translateX(-50%);
+	transform:translateX(-50%);
+	z-index:500;
+	}
+#lunbo_box .btn_box>span{
+	display:inline-block;
+	background:rgba(255,255,255,0.3);
+	width:10px;
+	height:10px;
+	border-radius:50%;
+	margin-left:5px;
+}
+#lunbo_box .btn_box>.active{
+	background:#fff;
+	}
+</style>
+</head>
+<div id="lunbo_box">
+<ul id="moveid">
+  <li><img src="img/1.jpg"></li>
+  <li><img src="img/3.jpg"></li>
+  <li><img src="img/4.jpg"></li>
+  <li><img src="img/5.jpg"></li>
+</ul>
+  <div class="btn_box"></div>
+</div>
+
+<script type="text/javascript" src="js/zepto.min.js"></script>
+<!--<script src="http://code.jquery.com/mobile/1.3.2/jquery.mobile-1.3.2.min.js"></script> -->
+<script>
+$(function(){
+    (function lunbo(){
+		var time=300;                     //轮播时间
+	    var tagId = "region";
+		var pressX = 0, pressY = 0;
+		var images=null;                   //图片 数量
+		var i=1;                     //图片 第几张
+		var li_width=null;         //li的宽度
+		var li_per=null;               //li宽度占ul的百分比
+		var slide_per=null;       //手指滑动的百分比
+		var spanX=null;           //手指滑动的距离
+		var obj = document.getElementById("moveid");
+	
+	    reset_css();
+		function reset_css(){
+			var li_first=$("#moveid li").first().clone();
+			var li_last=$("#moveid li").last().clone();
+			$("#moveid li").first().before(li_last);
+			$("#moveid li").last().after(li_first);
+			images=$("#moveid li").length;
+			li_per=(1/images);  
+			for(var j=0;j<images-2;j++){
+				$("#lunbo_box .btn_box").append("<span></span>");
+				$("#lunbo_box .btn_box span").eq(i-1).addClass("active");
+			}
+			$("#moveid").css({
+						   '-webkit-transform':'translate3d('+(-li_per)*100+'%,0,0)',
+							'transform':'translate3d('+(-li_per)*100+'%,0,0)',
+							'width':images*100+"%"
+					   }); 
+			$("#moveid li").css({"width":li_per*100+"%"});
+			li_width=$("#moveid li").width(); 
+		}
+		obj.addEventListener('touchmove', function(event) {
+			// 如果这个元素的位置内只有一个手指的话
+			event.preventDefault();
+			if (event.targetTouches.length == 1) {
+				var touch = event.targetTouches[0];
+				spanX = touch.pageX - pressX;
+				slide_per = spanX/li_width;
+				var spanY = touch.pageY - pressY;
+				var direct = "none";
+				if (Math.abs(spanX) > Math.abs(spanY)) {  
+					$("#moveid").css({      
+					   '-webkit-transform':'translate3d('+(i*(-li_per)+slide_per/images)*100+'%,0,0)',
+						'transform':'translate3d('+(i*(-li_per)+slide_per/images)*100+'%,0,0)',
+						'-webkit-transition':'0ms linear',
+						'transition':'0ms linear'
+				   })
+				} else {
+					//垂直方向
+					if (spanY > 0) {
+						direct = "down";//向下
+						
+						//do down function
+					} else {
+						direct = "up";//向上
+						//do up function
+					}
+				}
+				// 把元素放在手指所在的位置
+			  //  touchMove.value = direct + "(" + spanX + ';' + spanY + ")";
+			}
+		}, false);
+		obj.addEventListener('touchstart', function(event) {
+			// 如果这个元素的位置内只有一个手指的话
+			if (event.targetTouches.length == 1) {
+				var touch = event.targetTouches[0];
+				// 把元素放在手指所在的位置
+				pressX = touch.pageX;
+				pressY = touch.pageY;
+	
+				//touchStart.value = pressX + ':' + pressY;
+			}
+		}, false);
+		obj.addEventListener('touchend', function(event) { 
+			move();
+			slide_per=null;
+			// 如果这个元素的位置内只有一个手指的话
+			if (event.targetTouches.length == 1) {
+			   // var touch = event.targetTouches[0];
+				// 把元素放在手指所在的位置
+			   // touchEnd.value=touch.pageX + ';' + touch.pageY;
+			}
+		}, false);
+		//setInterval(move,1000)
+		 function move(){  console.log(123)
+			 var left;   			
+			 if(Math.abs(slide_per)>0.2){        //移动多少可以滑动到下一个
+				   spanX<0?i=i+1:i=i-1;
+				   
+			  }else{
+				   i=i;
+			  }
+			  left=-(li_per*100*i); 
+			  $("#moveid").css({
+					   '-webkit-transform':'translate3d('+left+'%,0,0)',
+						'transform':'translate3d('+left+'%,0,0)',
+						'-webkit-transition':+time+'ms linear',
+						'transition':+time+'ms linear',
+			  })
+			  if(i>images-2){
+					 i=1;
+					 firsr_last();
+			  }else if(i<1){
+					 i=images-2;
+					 firsr_last();
+			  }
+		      $("#lunbo_box .btn_box span").eq(i-1).addClass("active").siblings().removeClass("active");
+		}
+		function firsr_last(){
+	        setTimeout(function(){
+				  var left=-(li_per*100*i); 
+				  $("#moveid").css({
+					 '-webkit-transform':'translate3d('+left+'%,0,0)',
+					  'transform':'translate3d('+left+'%,0,0)',
+					  '-webkit-transition':'0ms linear',
+					  'transition':'0ms linear'
+				 })
+			},time)
+		}
+	})()
+})
+</script>
+<body>
+</body>
+</html>

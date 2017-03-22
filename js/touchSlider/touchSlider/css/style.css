@@ -1,0 +1,38 @@
+﻿@charset "utf-8";
+*{margin:0;padding:0;list-style:none;border:0;}
+body{width:100%;margin:0 auto;overflow:hidden}
+
+/* main_image */
+html{
+	font-size: 120px;
+	}
+.main_visual{border-top:1px solid #d7d7d7;overflow:hidden;position:relative; max-width:1000px;}
+.main_image{height:300px;overflow:hidden;position:relative;}
+.main_image ul{height:250px;overflow:hidden;position:absolute;top:0;left:0;}
+.main_image li{float:left;width:100%;overflow:hidden;}
+.main_image li div{width:33.3%;}
+.main_image li  img{ width:100%;height:auto;}
+.main_image li span{
+	display: block;
+    color: #f03468;
+    font-size: .23rem;
+	 }
+.price-mkt{
+	color: #ccc;
+    font-size: .212rem;
+	}
+.caption{
+	display: block;
+    overflow: hidden;
+    color: #666;
+    font-size: .212rem;
+    font-weight: 400;
+    word-wrap: break-word;
+    word-break: break-all;
+    white-space: normal;
+	}
+
+
+div.flicking_con{position:absolute;top:200px;left:50%;z-index:999;height:21px;margin:0 0 0 -50px;}
+div.flicking_con a{float:left;width:21px;height:21px;margin:0;padding:0;background:url('../images/btn_main_img.png') 0 0 no-repeat;display:block;text-indent:-1000px}
+div.flicking_con a.on{background-position:0 -21px}

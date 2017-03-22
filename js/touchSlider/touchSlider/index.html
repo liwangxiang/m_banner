@@ -1,0 +1,160 @@
+﻿<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<meta http-equiv="X-UA-Compatible" content="IE=edge" />
+<title>jQuery手机图片触屏滑动轮播效果代码</title>
+
+<link type="text/css" href="css/style.css" rel="stylesheet"/>
+
+<script type="text/javascript" src="js/jquery-1.7.1.min.js"></script>
+<script type="text/javascript" src="js/jquery.event.drag-1.5.min.js"></script>
+<script type="text/javascript" src="js/jquery.touchSlider.js"></script>
+<script type="text/javascript">
+$(document).ready(function(){
+	/*定义showlight的数量*/
+    var showlight=$(".main_image ul li").length;
+			 for(var i=0;i<showlight;i++){
+				$(".main_visual .flicking_con").append("<a></a>");  
+			 };
+			 $(".main_visual .flicking_con").css({"margin-left":-$(".main_visual .flicking_con").width()/2});
+
+	$(".main_visual").hover(function(){
+		$("#btn_prev,#btn_next").fadeIn()
+	},function(){
+		$("#btn_prev,#btn_next").fadeOut()
+	});
+	
+	$dragBln = false;
+	
+	$(".main_image").touchSlider({
+		flexible : true,
+		speed : 200,
+		btn_prev : $("#btn_prev"),
+		btn_next : $("#btn_next"),
+		paging : $(".flicking_con a"),
+		counter : function (e){
+			$(".flicking_con a").removeClass("on").eq(e.current-1).addClass("on");
+		}
+	});
+	
+	$(".main_image").bind("mousedown", function() {
+		$dragBln = false;
+	});
+	
+	$(".main_image").bind("dragstart", function() {
+		$dragBln = true;
+	});
+	
+	$(".main_image a").click(function(){
+		if($dragBln) {
+			return false;
+		}
+	});
+	
+	timer = setInterval(function(){
+		$("#btn_next").click();
+	}, 5000);
+	
+	$(".main_visual").hover(function(){
+		clearInterval(timer);
+	},function(){
+		timer = setInterval(function(){
+			$("#btn_next").click();
+		},5000);
+	});
+	
+	$(".main_image").bind("touchstart",function(){
+		clearInterval(timer);
+	}).bind("touchend", function(){
+		timer = setInterval(function(){
+			$("#btn_next").click();
+		}, 5000);
+	});
+	
+});
+</script>
+</head>
+<body>
+
+<div class="main_visual">
+	<div class="flicking_con">
+      <!--showlight的数量-->
+	</div>
+	<div class="main_image">
+		<ul>
+			<li>
+              <div style="float:left">
+                <a href="#"><img src="images/img_main_1.jpg">
+                  <h5 class="caption">ddddddddddddddd</h5> 
+                  <span class="price-pri">￥79.00</span>
+                  <span class="price-mkt">￥790.00</span>
+                </a>
+              </div>
+              <div style="float:left">
+                <a href="#"><img src="images/img_main_2.jpg">
+                  <h5 class="caption">aaaaaaaaaaaaa</h5>
+                  <span class="price-pri">￥79.00</span>
+                  <span class="price-mkt">￥790.00</span>
+                </a>
+              </div>
+              <div style="float:left">
+                <a href="#"><img src="images/img_main_2.jpg">
+                  <h5 class="caption">aaaaaaaaaaaaa</h5>
+                  <span class="price-pri">￥79.00</span>
+                  <span class="price-mkt">￥790.00</span>
+                </a>
+              </div>
+            </li>
+			<li>
+              <div style="float:left">
+                <a href="#"><img src="images/img_main_1.jpg">
+                  <h5 class="caption">ddddddddddddddd</h5> 
+                  <span class="price-pri">￥79.00</span>
+                  <span class="price-mkt">￥790.00</span>
+                </a>
+              </div>
+              <div style="float:left">
+                <a href="#"><img src="images/img_main_2.jpg">
+                  <h5 class="caption">aaaaaaaaaaaaa</h5>
+                  <span class="price-pri">￥79.00</span>
+                  <span class="price-mkt">￥790.00</span>
+                </a>
+              </div>
+              <div style="float:left">
+                <a href="#"><img src="images/img_main_2.jpg">
+                  <h5 class="caption">aaaaaaaaaaaaa</h5>
+                  <span class="price-pri">￥79.00</span>
+                  <span class="price-mkt">￥790.00</span>
+                </a>
+              </div>
+            </li><li>
+              <div style="float:left">
+                <a href="#"><img src="images/img_main_1.jpg">
+                  <h5 class="caption">ddddddddddddddd</h5> 
+                  <span class="price-pri">￥79.00</span>
+                  <span class="price-mkt">￥790.00</span>
+                </a>
+              </div>
+              <div style="float:left">
+                <a href="#"><img src="images/img_main_2.jpg">
+                  <h5 class="caption">aaaaaaaaaaaaa</h5>
+                  <span class="price-pri">￥79.00</span>
+                  <span class="price-mkt">￥790.00</span>
+                </a>
+              </div>
+              <div style="float:left">
+                <a href="#"><img src="images/img_main_2.jpg">
+                  <h5 class="caption">aaaaaaaaaaaaa</h5>
+                  <span class="price-pri">￥79.00</span>
+                  <span class="price-mkt">￥790.00</span>
+                </a>
+              </div>
+            </li>
+		</ul>
+	</div>
+</div>
+<!--main_visual end-->
+
+</body>
+</html>
