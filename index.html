@@ -104,6 +104,7 @@ $(function(){
 	$('html').css({"font-size":$(window).width()/10});
     (function lunbo(){
 		var time=300;                     //轮播时间
+		var timer;                        //轮播定时器
 		var pressX = 0, pressY = 0;
 		var view_W = $(window).width()    //可见视口宽度
 		var images=null;                   //图片 数量
@@ -150,23 +151,30 @@ $(function(){
 		}, false);
 		obj.addEventListener('touchstart', function(event) {
 			// 如果这个元素的位置内只有一个手指的话
+			clearInterval(timer);
 			if (event.targetTouches.length == 1) {
 				var touch = event.targetTouches[0];
 				// 把元素放在手指所在的位置
 				pressX = touch.pageX;
 				pressY = touch.pageY;
+				
 			}
 		}, false);
 		obj.addEventListener('touchend', function(event) { 
-			move_end();
-			// 如果这个元素的位置内只有一个手指的话
-			if (event.targetTouches.length == 1) {
-			   // var touch = event.targetTouches[0];
-				// 把元素放在手指所在的位置
-			   // touchEnd.value=touch.pageX + ';' + touch.pageY;
-			}
+		    move_end();
+			timer = setInterval(function(){
+				i++;
+				spanX = 0;
+				direct = 'left';
+				move_end();
+			},1000)
 		}, false);
-		//setInterval(move,1000)
+		timer = setInterval(function(){
+			i++;
+			spanX = 0;
+			direct = 'left';
+			move_end();
+		},1000)
 		 function move_end(){
 			 if(Math.abs(spanX/view_W)>0.2){        //移动多少可以滑动到下一个
 				   spanX<0?i=i+1:i=i-1;
@@ -184,7 +192,6 @@ $(function(){
 			  setTimeout(function(){
 			      $("#lunbo_box .btn_box span").eq(i-1).addClass("active").siblings().removeClass("active");
 			      $("#lunbo_box li").eq(i).addClass("active").siblings().removeClass("active");
-			      window.cancelAnimationFrame(id);
 			  },100)
 		}
 		function first_last(){
