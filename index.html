@@ -25,12 +25,31 @@
   #moveid li{
     float:left;
     width: 10rem;
+    position: relative;
 	  }
   #moveid li img{
 	  width:100%;
 	  height:200px;
 	  float: left;
     } 
+#moveid li .font{
+	position: absolute;
+	left: 50%;
+	top: 50%;
+	width: 100px;
+	height: 30px;
+	-webkit-transform:translate(0%);
+	transform:translate(0%);
+	-webkit-transition:all 0.5s;
+    transition:all 0.5s;
+	text-align: center;
+	font-size: 14px;
+	color: #fff;
+}
+#moveid li.active .font{
+	-webkit-transform:translate(-50%);
+	transform:translate(-50%);
+}
 #lunbo_box .btn_box{
 	position:absolute;
 	bottom:12%;
@@ -54,10 +73,10 @@
 </head>
 <div id="lunbo_box">
 	<ul id="moveid">
-	  <li><img src="img/1.jpg"></li>
-	  <li><img src="img/3.jpg"></li>
-	  <li><img src="img/4.jpg"></li>
-	  <li><img src="img/5.jpg"></li>
+	  <li><img src="img/1.jpg"><p class="font">我是第一页内容啊！</p></li>
+	  <li><img src="img/3.jpg"><p class="font">我是第二页内容啊！</p></li>
+	  <li><img src="img/4.jpg"><p class="font">我是第三页内容啊！</p></li>
+	  <li><img src="img/5.jpg"><p class="font">我是第四页内容啊！</p></li>
 	</ul>
     <div class="btn_box">
     	<span class="active"></span>
@@ -78,7 +97,8 @@ $(function(){
 		var view_W = $(window).width()    //可见视口宽度
 		var images=null;                   //图片 数量
 		var i=1;                     //图片 第几张
-		var spanX=null;           //手指滑动的距离
+		var spanX=null;           //手指X轴滑动的距离
+		// var spanY=null;           //手指Y轴滑动的距离
 		var direct = "none";      //手指滑动的方向
 		var obj = document.getElementById("moveid");
 	
@@ -97,16 +117,17 @@ $(function(){
 			if (event.targetTouches.length == 1) {
 				var touch = event.targetTouches[0];
 				spanX = touch.pageX - pressX;
-				var spanY = touch.pageY - pressY;
+				spanY = touch.pageY - pressY;
 				if (Math.abs(spanX) > Math.abs(spanY)) {  
 					css_ing((-i*view_W+spanX),0)
 				} else {
+					return false;
 					//垂直方向
-					if (spanY > 0) {
-						direct = "down";//向下
-					} else {
-						direct = "up";//向上
-					}
+					// if (spanY > 0) {
+					// 	direct = "down";
+					// } else {
+					// 	direct = "up";
+					// }
 				}
 			}
 		}, false);
@@ -117,8 +138,6 @@ $(function(){
 				// 把元素放在手指所在的位置
 				pressX = touch.pageX;
 				pressY = touch.pageY;
-	
-				//touchStart.value = pressX + ':' + pressY;
 			}
 		}, false);
 		obj.addEventListener('touchend', function(event) { 
@@ -145,6 +164,7 @@ $(function(){
 					 i=images-2;
 					 first_last();
 			  }
+			  $("#lunbo_box li").eq(i).addClass("active").siblings().removeClass("active");
 		      $("#lunbo_box .btn_box span").eq(i-1).addClass("active").siblings().removeClass("active");
 		}
 		function first_last(){
