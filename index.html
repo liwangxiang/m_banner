@@ -36,7 +36,7 @@
 	position: absolute;
 	left: 50%;
 	top: 50%;
-	width: 100px;
+	width: 130px;
 	height: 30px;
 	-webkit-transform:translate(0%);
 	transform:translate(0%);
@@ -184,9 +184,7 @@ $(function(){
 			  setTimeout(function(){
 			      $("#lunbo_box .btn_box span").eq(i-1).addClass("active").siblings().removeClass("active");
 			      $("#lunbo_box li").eq(i).addClass("active").siblings().removeClass("active");
-			      	// $("#lunbo_box li").eq(i-1).addClass("_left").siblings().removeClass("_left");
-			      	// $("#lunbo_box li").eq(i+1).addClass("_right").siblings().removeClass("_right");
-			      
+			      window.cancelAnimationFrame(id);
 			  },100)
 		}
 		function first_last(){
@@ -201,6 +199,7 @@ $(function(){
 				'-webkit-transition':Time+'ms linear',
 				'transition':Time+'ms linear'
 		   });
+			//每次滑动初始化位置
 			if(direct == 'right'){
 	      		$("#lunbo_box li").addClass("_left").removeClass("_right");
 	      	}else{
